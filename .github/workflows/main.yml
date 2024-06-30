@@ -1,0 +1,33 @@
+name: Unzip Specific File
+
+on: 
+  push:
+    paths:
+      - 'anti-counterfeit-product-identification-system-using-blockchain-main.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install unzip
+      run: sudo apt-get install -y unzip
+
+    - name: Unzip the specific file
+      run: unzip -o anti-counterfeit-product-identification-system-using-blockchain-main.zip -d .
+
+    - name: List files for verification
+      run: ls -la
+
+    - name: Commit unzipped files
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add .
+        git commit -m 'Unzipped the file'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
